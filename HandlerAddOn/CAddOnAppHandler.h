@@ -14,6 +14,7 @@
 class CSContainer;
 class CSLibrary;
 class BFile;
+class BView;
 class BWindow;
 class CSClass;
 class CPreferences;

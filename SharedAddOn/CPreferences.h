@@ -8,6 +8,8 @@
 #define		PREF_FILE_NAME				"DontWorry.prefs"
 #define		PREF_PATH_NAME				"AddOnBeIDE"
 
+class BBitmap;
+
 class CPreferences:public BMessage
 {
 protected:
