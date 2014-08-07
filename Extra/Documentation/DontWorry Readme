@@ -1,0 +1,104 @@
+DontWorry for BeOS Intel and PPC
+by Cedric Vincent and Sylvain Tertois
+and Andreas Drewke for PPC version
+
+Thank you for downloading this add-on! Please try it and tell us what you think of it, what you'd like to find in it, and of course your bug reports. (dontworry@becoz.org).
+
+Any updates and information will be available on:
+http://www.becoz.org/beos
+If you like DontWorry, you should download BeHappy as well, as DontWorry and BeHappy like to work together ;-)
+
+version Beta3.1
+bug corrections and code cleaning
+The references are now recognized
+
+version Beta3.0
+some bug have been corrected, some in parsing and other in GUI...
+the code of analyzing syntaxe for completion or variable type detection has rewriten completely.
+
+version Beta2.4
+Thank you to Sébastien Feldis for this very nice name ;-)
+and thank to Andreas Drewke for the work on ppc version....
+
+And of course thanks to everyone who wrote us, and sent us some bug reports and suggestions! To name a few (in no particular order):
+BGA, rgb, Jerome Leveque, Sergei Dolgov, Carlos Hasan, Geoffrey Benson, Bernard Krummenacher, Andrew Brown, Cedric Neve, Otherwise, Stephane Fritsch
+
+Changes since beta2.3
+Add support of const in CSLib, you can see and add the "const" property. Add the "virtual" function, if a method is virtual you can see a little ghost.
+
+Changes since beta2.2
+Add an option in settings "Case Sensitive", the search in window is now case-sensitive or not . Move picture from /boot/home/config/settings/AddOnBeIDE/Images to the resource of DontWorryPlugin.
+And we have help to make the ppc version ....
+
+Changes since beta2.1
+Bugs correction and improve source-code ! 
+And we create a type for CS-file.
+
+Changes since beta2
+Correction of bugs and you can now move the window when the addon is call.
+
+Changes since beta1
+Changes a few things in the documentation (about the splash screen, the header files in "using the add-on" and a "Known bugs and limitations").
+DontWorry know recognises the member variables initialisations in the header files, and several member variables declared on the same line with ',' between them.
+Doesn't crash after a "close all" anymore.
+Parses now the files in subdirectories, and not only in the project access paths.
+The splash screen can be disabled (a small window showing the current parsing status still appears)
+A small bulb is displayed in the project window to confirm that the add-on is correctly installed.
+You can now use the Ctrl, Shift, Menu and Option keys with the function keys for the help & auto-complete key.
+Other bug corrections.
+
+Files
+So as the add-on is in a pkg file, it should install itself in the correct directories. But if you're curious, you should know that the add-on is made of these files:
+/boot/home/config/settings/AddOnBeIDE/
+	A configuration file, the images the add-on uses, and a binary file that contains the parsed system library.
+/boot/home/config/lib/CSLib.so and libDontWorry.so : two library files used by the add-on.
+/boot/develop/BeIDE/plugins/Editor_add_ons/DontWorry and
+/boot/develop/BeIDE/plugins/Prefs_add_ons/DontWorryPlugin
+	The two files that communicate with BeIDE
+
+First Launch
+Once the add-on is installed, launch BeIDE. You'll see a splash screen, and the add-on will work a bit. It is normal, and it will take some time, usually less than ten seconds. The add-on loads the system header files and parse them. It will do this only the first time. The next times you launch BeIDE, it will be as fast as usual. You can disable the splash screen in the preferences.
+To use the add-on in a project, you must activate it. To do this, open a BeIDE project, and go to the 'Project Settings' window. You'll see a 'DontWorry Tool' option.
+
+Configuration
+This will open the add-on's control panel. First, check 'Use the DontWorry option'. This will turn the add-on on. You can turn it off by unchecking the option back. If you check 'Show protected/private members', the add-on will allways show you these members. If you leave it uncheck, it will show them only if you are supposed to have access to them. 
+
+The 'Display more info about current parsing' option is just here to debug the code. You don't have to use it, except to do a bug report ;-)
+
+When the add-on adds a function or method for you, it can add the name of the function with '()', or the name of the function with the full list of parameters. You can control this with the 'Always add parameters of a method' option.
+
+The 'Use auto complete variables' can be useful too. Like the 'tab' key in the terminal, you can ask the add-on to complete the name of a variable.
+
+You can show or not, the splash-screen with the "Display Splash-Screen" option.
+
+Finally the 'Help and complete word key' lets you choose a function key that will 
+be used to call BeHappy or to trigger the 'auto complete' option. You can use the function key with or without special key such as "Ctrl","Menu Key","Shift", etc....
+
+Using the add-on
+First the add-on must know your class structures. For this you must declare your classes in the header (*.h) files. DontWorry will only update the class structure when you close the header file wondiw. So when you create or change a *.h file, close its window if you want that DontWorry knows about your new or updated class.
+ 
+The add-on will appear in several circumstances:
+* When you type the name of a class and ::
+* When you type the name of a member/local/global variable and type -> or .
+In these cases, a window will open to show you the methods and variables that are available in the class you are using. You can select a method or member variable with the keyboard (with the cursor keys or by typing the first letters of what you are looking for). When you press Enter, the function name is added to the list. If you are in a system class, and if you have BeHappy, you can ask DontWorry to call BeHappy and display some help about the selected method. To do this, press the function key you defined in the preferences as the 'Help key'.
+To close the methods window without adding a method name or a variable, press the 'Esc' key.
+
+Finally if you activate the 'Use auto complete variables' option, you can type the beginning of a variable name (at least 3 letters) and press the Function key you defined in the preferences as the 'Complete word Key' (it is the same key than the 'Help key'). If only one possibility is available, the name will be completed. If not, a list will appear, and you'll be able to select the one you want.
+
+If you select a function name in the BeIDE window and press the 'Help key', BeHappy will also be opened to show you the BeBook documentation about that function.
+
+Known bugs and limitations
+The class information in Dontworry isn't always up to date. It is a bit difficult for DontWorry to know when the .h file is updated, so sometimes it doesn't work quite well. First the .h file must be in your project list, and you must edit it by double-clicking on it in the project list, not by directly opening the .h file from a Tracker window. Then you must close the header file window so that DontWorry knows that it has been modified. If it still doesn't work, you can close and open back your project. We are trying to improve this, but if you have any ideas we are interested ;-)
+A few C++ directives aren't recognised (such as try/catch)
+The 'const' keywords aren't recognised
+Chained references aren't recognised yet. i.e. when you do "m_Window->Bounds().left" , the "m_Window->Bounds()" wont be recognised as a BRect object, and DontWorry won't display a list of BRect methods. We will work on this.
+
+Beta
+Here you are. We hope you'll find this add-on useful. If you have any questions, bug reports, or suggestions, please send an e-mail to dontworry@becoz.org. This is still a beta version. It is stable on our systems, but we can guaranty that it will work on yours. If you have a BeIDE crash, dont clic on the 'OK' button on the crash alert box. You should be able to select the BeIDE window again, and save your file before the BeOS kills BeIDE. Of course you should use the 'Save as' option, and use a different name for the file. You never know...
+
+Happy coding!
+
+Cedric Vincent and Sylvain Tertois
+
+You can copy and distribute DontWorry as you want, as long as the original archive remains unchanged. In no event shall we be held liable for any damages arising from the use of this software.
+Be and BeOs are registered trademarks of Be, Inc. All other trademarks mentioned belong to their respective owners. Thank you for your attention. Dismissed.

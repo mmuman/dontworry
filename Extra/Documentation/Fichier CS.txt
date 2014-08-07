@@ -1,0 +1,62 @@
+Description du format de fichier utilisé par les classes 'CS'
+
+Le fichier est organisé en 'chunks'. Un chunk est une certaine zone du fichier, qui peut soit contenir d'autres chunks, soit des données. Chaque chunk a une entête de 8 octets: les 4 premiers sont un identifiant, qui permet de .... l'identifier. Les 4 suivants sont la taille du chunk (y compris l'entête).
+
+Petite définition: quand je dis 'pointeur dans le chunk y', ça veut dire un entier de 4 octets qui contient l'offset entre le début des données du chunk y (donc APRES l'entête de 8 octets) et les données intéressantes.
+
+Liste des chunks
+'CSFL': Chunk général. C'est tout le fichier. Il contient les chunks 'LCLA', 'CLNM', et 'LIST'
+
+'LCLA': Liste de chunks 'CLAS'. Les chunks 'CLAS' sont juste mis les uns derrière les autres.
+
+'CLNM': Liste de noms de classes ou de types utilisés par la bibliothèque. La liste contient aussi bien des noms internes (noms de classes ou types définis dans la bibliothèque) que des noms externes (noms de classes ou types utilisés dans les appels). Il s'agit tout simplement d'une suite de chaînes de caractères. Chaque chaîne est terminée par un octet nul, et la chaîne suivante commence tout de suite après.
+
+'LIST': Définit la liste des noms de classes ou types utilisés dans la bibliothèque. Le nombre de noms définis est la taille du chunk, moins la taille de l'entête, divisée par 8. Donc chaque entrée contient 8 octets. Les 4 premiers sont un pointeur vers le nom de la classe. Le pointeur est relatif au début du chunk 'CLNM' précédent (donc une valeur en dessous de 8 est invalide, puisque c'est la taille de l'entête). Les 4 suivants sont un pointeur vers le chunk 'CLAS' qui représente la classe ou le type voulu. Pareil, le pointeur est relatif au début du chunk 'LCLA'. Un pointeur égal à 0xffffffff veut dire que la classe ou le type est externe.
+
+'CLAS': Chunk qui décrit une classe. Contient les chunks 'INFO', 'METS', 'MVRS' et 'STRS'
+Chunk 'INFO':
+4 octets:   Pointeur vers le nom de la classe (dans le chunk 'CLNM')
+4 octets:   Pointeur vers le nom réel de la classe, dans le cas d'un typedef (dans le chunk 'CLNM')
+		0xffffffff si c'est une classe
+1 octet:     Profondeur du pointeur (pour les typedef)
+1 octet:     flag 'const' (pour les typedef). Si 0, pas de const; sinon, const.
+1 octet:     Nombre de classes dont on hérite (pour les classes)
+1 octet:     Nombre de classes amies (pour les classes)
+autant de fois qu'il le faut, 4 octets:  Pointeur vers un nom de classe dont on hérite (dans le chunk 'CLNM')
+autant de fois qu'il le faut, 4 octets:  Pointeur vers un nom de classe amie (dans le chunk 'CLNM')
+** à partir de la version 6 **
+4 octets:	Pointeur vers le chemin du fichier .h qui contient la classe (dans le chunk 'STRS') 0xffffffff
+		si le chemin du fichier n'a pas été stoqué
+** à partir de la version 10 **
+4 octets:	Date de la dernière modification
+
+Chunk 'METS': contient des chunks 'METH'
+
+Chunk 'STRS': liste de chaînes de caractères, terminées par des octets nuls. Ici seront stockées les chaînes locales à la classe (noms de méthodes, d'arguments ou de variables membres)
+
+Chunk 'METH':
+4 octets: Pointeur vers le nom de la méthode, dans le chunk 'STRS'
+4 octets: Pointeur vers le nom du type de retour, dans le chunk 'CLNM'
+1 octet: niveau de pointeur du type de retour
+1 octet: bit 0: flag 'const' du type de retour, bit1: flag virtual, bit 2: flag & du type de retour
+1 octet: nombre d'arguments
+1 octet: type (0: privé, 1: protégé, 2: public)
+ensuite, par argument:
+4 octets: Pointeur vers le nom du type de variable, dans le chunk 'CLNM'
+4 octets: Pointeur vers le nom de la variable, dans le chunk 'STRS' (0xffffffff si pas de nom)
+4 octets: Pointeur vers la valeur par défaut de la variable, dans le chunk 'STRS', 0xffffffff si pas de valeur par défaut
+1 octet:   Niveau de pointeur
+1 octet;   bit 0: flag 'const', bit 1: flag '&'
+2 octets: pas utilisés
+
+Chunk 'MVRS':
+2 octets: nombre de variables membres
+2 octets: pas utilisés.
+ensuite, par variable membre:
+4 octets: Pointeur vers le nom du type de variable, dans le chunk 'CLNM'
+4 octets: Pointeur vers le nom de la variable, dans le chunk 'STRS'
+1 octet:   Niveau de pointeur
+1 octet;   bit 0: flag 'const'
+1 octet:   type (0: privé, 1: protégé, 2: public)
+1 octet:   pas utilisé
+
